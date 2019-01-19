@@ -1,47 +1,47 @@
 // Get references to page elements
-var $exampleText = $("#example-text");
-var $exampleDescription = $("#example-description");
+var $blogText = $("#blog-text");
+var $blogDescription = $("#blog-description");
 var $submitBtn = $("#submit");
-var $exampleList = $("#example-list");
+var $blogList = $("#blog-list");
 
 // The API object contains methods for each kind of request we'll make
 var API = {
-  saveExample: function(example) {
+  saveBlog: function(blog) {
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
       },
       type: "POST",
-      url: "api/examples",
-      data: JSON.stringify(example)
+      url: "api/blogs",
+      data: JSON.stringify(blog)
     });
   },
-  getExamples: function() {
+  getBlogs: function() {
     return $.ajax({
-      url: "api/examples",
+      url: "api/blogs",
       type: "GET"
     });
   },
-  deleteExample: function(id) {
+  deleteBlog: function(id) {
     return $.ajax({
-      url: "api/examples/" + id,
+      url: "api/blogs/" + id,
       type: "DELETE"
     });
   }
 };
 
-// refreshExamples gets new examples from the db and repopulates the list
-var refreshExamples = function() {
-  API.getExamples().then(function(data) {
-    var $examples = data.map(function(example) {
+// refreshBlogs gets new Blogs from the db and repopulates the list
+var refreshBlogs = function() {
+  API.getBlogs().then(function(data) {
+    var $blogs = data.map(function(blog) {
       var $a = $("<a>")
-        .text(example.text)
-        .attr("href", "/example/" + example.id);
+        .text(blog.text)
+        .attr("href", "/blog/" + blog.id);
 
       var $li = $("<li>")
         .attr({
           class: "list-group-item",
-          "data-id": example.id
+          "data-id": blog.id
         })
         .append($a);
 
@@ -54,46 +54,46 @@ var refreshExamples = function() {
       return $li;
     });
 
-    $exampleList.empty();
-    $exampleList.append($examples);
+    $blogList.empty();
+    $blogList.append($blogs);
   });
 };
 
-// handleFormSubmit is called whenever we submit a new example
-// Save the new example to the db and refresh the list
+// handleFormSubmit is called whenever we submit a new blog
+// Save the new blog to the db and refresh the list
 var handleFormSubmit = function(event) {
   event.preventDefault();
 
-  var example = {
-    text: $exampleText.val().trim(),
-    description: $exampleDescription.val().trim()
+  var blog = {
+    title: $blogText.val().trim(),
+    text: $blogDescription.val().trim()
   };
 
-  if (!(example.text && example.description)) {
-    alert("You must enter an example text and description!");
+  if (!(blog.title && blog.text)) {
+    alert("You must enter an blog text and description!");
     return;
   }
 
-  API.saveExample(example).then(function() {
-    refreshExamples();
+  API.saveBlog(blog).then(function() {
+    refreshBlogs();
   });
 
-  $exampleText.val("");
-  $exampleDescription.val("");
+  $blogText.val("");
+  $blogDescription.val("");
 };
 
-// handleDeleteBtnClick is called when an example's delete button is clicked
-// Remove the example from the db and refresh the list
+// handleDeleteBtnClick is called when an blog's delete button is clicked
+// Remove the blog from the db and refresh the list
 var handleDeleteBtnClick = function() {
   var idToDelete = $(this)
     .parent()
     .attr("data-id");
 
-  API.deleteExample(idToDelete).then(function() {
-    refreshExamples();
+  API.deleteBlog(idToDelete).then(function() {
+    refreshBlogs();
   });
 };
 
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
-$exampleList.on("click", ".delete", handleDeleteBtnClick);
+$blogList.on("click", ".delete", handleDeleteBtnClick);
