@@ -1,6 +1,6 @@
 var db = require("../models");
 
-module.exports = function (app, passport) {
+module.exports = function(app, passport) {
   // Load index page
   app.get("/", function(req, res) {
     if (req.user) {
@@ -10,7 +10,7 @@ module.exports = function (app, passport) {
     }
   });
 
-  app.get("/login", function (req, res) {
+  app.get("/login", function(req, res) {
     res.render("login");
   });
 
@@ -30,12 +30,14 @@ module.exports = function (app, passport) {
     db.User.create({
       username: req.body.username,
       password: req.body.password
-    }).then(function(){
-      console.log("created");
-    }).catch(function(err){
-      console.log("err creating " + err);
     })
-    
+      .then(function(user) {
+        console.log("created");
+        res.render("profile", { user: user });
+      })
+      .catch(function(err) {
+        console.log("err creating " + err);
+      });
   });
   app.get("/logout", function(req, res) {
     req.logout();
@@ -43,8 +45,8 @@ module.exports = function (app, passport) {
   });
 
   // Load User page and pass in an User by id
-  app.get("/User/:id", function (req, res) {
-    db.User.findOne({ where: { id: req.params.id } }).then(function (dbUser) {
+  app.get("/User/:id", function(req, res) {
+    db.User.findOne({ where: { id: req.params.id } }).then(function(dbUser) {
       res.render("User", {
         User: dbUser
       });
@@ -52,7 +54,7 @@ module.exports = function (app, passport) {
   });
 
   // Render 404 page for any unmatched routes
-  app.get("*", function (req, res) {
+  app.get("*", function(req, res) {
     res.render("404");
   });
 };
