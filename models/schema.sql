@@ -1,5 +1,7 @@
-DROP DATABASE IF EXISTS exampledb;
-CREATE DATABASE exampledb;
+DROP DATABASE IF EXISTS blogdb;
+CREATE DATABASE blogdb;
 
-DROP DATABASE IF EXISTS testdb;
-CREATE DATABASE testdb;
+use blogdb;
+ALTER TABLE Blogs
+ADD title varchar(255);
+
