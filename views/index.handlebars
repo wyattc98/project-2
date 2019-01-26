@@ -1,13 +1,6 @@
 <link rel="stylesheet" href="../public/styles/styles.css">
 <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
-<nav>
-  <ul class="main-nav">
-    <li>The Blog Spot</li>
-    <li><a href="">Blogs</a></li>
-    <li><a href="">Users</a></li>
-    <li><a href="">Profile</a></li>
-  </ul>
-</nav>
+
 <div id="home">
   <div class="container">
     <div class="row">
@@ -16,16 +9,17 @@
         <h2>This is our Home Page!</h2>
         <form class="clearfix mb-4" action="POST">
           <div class="form-group">
-            <label for="blog-text">blog Text</label>
+            <label for="blog-text">Blog Text:</label>
             <input type="text" id="blog-text" class="form-control" aria-describedby="blog-text" placeholder="Enter blog Text">
           </div>
           <div class="form-group">
-            <label for="blog-description">blog Description</label>
+            <label for="blog-description">Blog Description:</label>
             <textarea class="form-control" id="blog-description" aria-describedby="blog-description" placeholder="Enter blog Description"></textarea>
           </div>
           <button id="submit" class="btn btn-primary float-right">Submit</button>
         </form>
-        <h3>blogs:</h3>
+        {{!--Add Author Slot --}}
+        <h3>Blogs:</h3>
         <ul id="blog-list" class="list-group">
           {{#each user.blogs}}
           <li data-id="{{this.id}}" class="list-group-item">
@@ -38,6 +32,7 @@
     </div>
   </div>
 </div>
+
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="/js/index.js"></script>
