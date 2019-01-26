@@ -1,3 +1,33 @@
+html {
+  font-family: 'Lora', serif;
+}
+
+.main-nav{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  border-bottom: 1px solid black;
+  background: khaki;
+}
+
+
+.main-nav li:first-child {
+  margin-right: auto;
+}
+
+.main-nav li {
+  list-style-type: none;
+}
+
+.main-nav a {
+  color: black;
+  margin: 10px;
+  display: block;
+  padding: 15px;
+  text-decoration: none;
+}
+
 .list-group-item {
   line-height: 2.5;
 }
