@@ -3,6 +3,10 @@ var $blogText = $("#blog-text");
 var $blogDescription = $("#blog-description");
 var $submitBtn = $("#submit");
 var $blogList = $("#blog-list");
+var username = $("#username");
+var password = $("#password");
+var signUpBtn = $("#signup");
+var loginBtn = $("#login");
 
 // The API object contains methods for each kind of request we'll make
 var API = {
@@ -26,6 +30,26 @@ var API = {
     return $.ajax({
       url: "api/blogs/" + id,
       type: "DELETE"
+    });
+  },
+  signUp: function(user) {
+    return $.ajax({
+      headers: {
+        "Content-Type": "application/json"
+      },
+      type: "POST",
+      url: "/signup",
+      data: JSON.stringify(user)
+    });
+  },
+  logIn: function(user) {
+    return $.ajax({
+      headers: {
+        "Content-Type": "application/json"
+      },
+      type: "POST",
+      url: "/login",
+      data: JSON.stringify(user)
     });
   }
 };
@@ -94,6 +118,58 @@ var handleDeleteBtnClick = function() {
   });
 };
 
+var handleSignUpSubmit = function(e) {
+  e.preventDefault();
+
+  var user = {
+    username: username.val().trim(),
+    password: password.val().trim()
+  };
+
+  if (!(user.username && user.password)) {
+    alert("You must enter a username and password!");
+    return;
+  }
+  API.signUp(user)
+    .then(function() {
+      console.log("signed up");
+      window.location.reload(true);
+    })
+    .catch(function(err) {
+      alert("Error signing up." + err);
+    });
+
+  username.val("");
+  password.val("");
+};
+
+var handleLoginSubmit = function(e) {
+  e.preventDefault();
+
+  var user = {
+    username: username.val().trim(),
+    password: password.val().trim()
+  };
+
+  if (!(user.username && user.password)) {
+    alert("You must enter a username and password!");
+    return;
+  }
+  API.logIn(user)
+    .then(function() {
+      console.log("logged in!");
+      window.location.reload(true);
+    })
+    .catch(function(err) {
+      alert("Error logging in. " + err);
+    });
+
+  username.val("");
+  password.val("");
+};
+
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
 $blogList.on("click", ".delete", handleDeleteBtnClick);
+signUpBtn.on("click", handleSignUpSubmit);
+loginBtn.on("click", handleLoginSubmit);

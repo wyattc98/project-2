@@ -50,17 +50,9 @@ body {
   display: flex;
   justify-content: center;
   padding-left: 15%;
+
 }
 
 .list-group-item {
   line-height: 2.5;
-}
-
-#widget-container{
-  width: 100vw;
-  height: 100vh;
-}
-
-.container {
-  border: 1px solid lightslategray;
 }
