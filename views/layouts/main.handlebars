@@ -11,8 +11,12 @@
 </head>
 
 <body>
-
+  {{#if user}}
+    {{>header user}}
+    {{else}}
+    <nav >No user</nav>
+    {{/if}}
   {{{body}}}
 </body>
-
+<script src="/js/index.js"></script>
 </html>
