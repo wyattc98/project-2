@@ -5,15 +5,24 @@ var db = require("../models");
 module.exports = function(app) {
   // Get all Blogs
   app.get("/api/Blogs", function(req, res) {
-    db.Blog.findAll({}).then(function(dbBlogs) {
-      res.json(dbBlogs);
-    });
+    if (req.isAuthenticated()) {
+      db.Blog.findAll({
+        where: {
+          uid: req.user.id
+        }
+      }).then(function(dbBlogs) {
+        res.json(dbBlogs);
+      });
+    } else {
+      res.redirect("/");
+    }
   });
 
   //Get route for a single post
   app.get("/api/Blogs/:id", function(req, res) {
     db.Blog.findOne({
       where: {
+        uid: req.user.id,
         id: req.params.id
       },
       include: [db.User]
@@ -24,16 +33,31 @@ module.exports = function(app) {
 
   // Create a new Blog
   app.post("/api/Blogs", function(req, res) {
-    db.Blog.create(req.body).then(function(dbBlog) {
-      res.json(dbBlog);
-    });
+    if (req.user && req.isAuthenticated() && req.session) {
+      var newBlog = {
+        title: req.body.title,
+        text: req.body.text,
+        uid: req.user.id
+      };
+      db.Blog.create(newBlog).then(function(dbBlog) {
+        res.json(dbBlog);
+      });
+    } else {
+      console.log("unauthorized attempt");
+      res.end();
+    }
   });
 
   // Delete an Blog by id
   app.delete("/api/Blogs/:id", function(req, res) {
-    db.Blog.destroy({ where: { id: req.params.id } }).then(function(dbBlog) {
-      res.json(dbBlog);
-    });
+    if (req.user && req.isAuthenticated() && req.session) {
+      db.Blog.destroy({ where: { id: req.params.id } }).then(function(dbBlog) {
+        res.json(dbBlog);
+      });
+    } else {
+      console.log("unauthorized attempt to destroy blog");
+      res.redirect("/");
+    }
   });
 
   //PUT route for updating posts

@@ -10,7 +10,6 @@ chai.use(chaiHttp);
 var request;
 
 describe("GET /api/Blogs", function() {
-
   // Before each test begins, create a new request server for testing
   // & delete all examples from the db
   beforeEach(function() {
@@ -26,7 +25,6 @@ describe("GET /api/Blogs", function() {
     ]).then(function() {
       // Request the route that returns all examples
       request.get("/api/Blogs").end(function(err, res) {
-
         var responseStatus = res.status;
         var responseBody = res.body;
 
@@ -53,7 +51,6 @@ describe("GET /api/Blogs", function() {
             text: "Second Example",
             title: "Second Description"
           });
-
 
         // The `done` function is used to end any asynchronous tests
         done();

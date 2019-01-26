@@ -60,7 +60,7 @@ var refreshBlogs = function() {
     var $blogs = data.map(function(blog) {
       var $a = $("<a>")
         .text(blog.text)
-        .attr("href", "/blog/" + blog.id);
+        .attr("href", "/blogs/" + blog.id);
 
       var $li = $("<li>")
         .attr({
@@ -173,3 +173,4 @@ $submitBtn.on("click", handleFormSubmit);
 $blogList.on("click", ".delete", handleDeleteBtnClick);
 signUpBtn.on("click", handleSignUpSubmit);
 loginBtn.on("click", handleLoginSubmit);
+refreshBlogs();
