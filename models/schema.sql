@@ -3,4 +3,5 @@ CREATE DATABASE blogdb;
 
 use blogdb;
 
+
 select * from blogs;

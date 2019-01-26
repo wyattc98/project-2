@@ -1,3 +1,42 @@
+body {
+  font-family: 'Lora', serif;
+  background-image: url("https://images.pexels.com/photos/747964/pexels-photo-747964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260/");
+
+}
+
+#main-nav{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  border-bottom: 1px solid darkgoldenrod;
+  background: khaki;
+}
+
+
+#main-nav li:first-child {
+  margin-right: auto;
+}
+
+#main-nav li {
+  list-style-type: none;
+}
+
+#main-nav a {
+  color: black;
+  margin: 10px;
+  display: block;
+  padding: 15px;
+  text-decoration: none;
+}
+
+
+
+.container {
+  background: whitesmoke;
+  border: 1px solid lightslategray;
+}
+
 .list-group-item {
   line-height: 2.5;
 }

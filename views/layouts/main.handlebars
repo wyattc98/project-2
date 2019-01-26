@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet" href="../public/styles/styles.css">
 
 <head>
   <meta charset="utf-8">
@@ -11,11 +12,8 @@
 </head>
 
 <body>
-  {{#if user}}
-    {{>header user}}
-    {{else}}
-    <nav >No user</nav>
-    {{/if}}
+
+  {{>header}}
   {{{body}}}
 </body>
 <script src="/js/index.js"></script>
