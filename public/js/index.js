@@ -186,3 +186,4 @@ $submitBtn.on("click", handleFormSubmit);
 $blogList.on("click", ".delete", handleDeleteBtnClick);
 signUpBtn.on("click", handleSignUpSubmit);
 loginBtn.on("click", handleLoginSubmit);
+refreshBlogs();
