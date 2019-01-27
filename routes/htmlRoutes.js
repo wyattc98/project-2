@@ -17,8 +17,11 @@ module.exports = function(app, passport) {
   //   console.log(bcrypt.compareSync(h1, h1));
   // });
   app.get("/", function(req, res) {
-    console.log("GETTING " + req.session.id);
-    res.render("index", { user: req.user });
+    if (req.isAuthenticated()) {
+      res.render("index", { user: req.user });
+    } else {
+      res.render("index");
+    }
   });
 
   app.get("/login", function(req, res) {
@@ -26,7 +29,7 @@ module.exports = function(app, passport) {
     if (req.isAuthenticated() && req.user) {
       res.redirect("/");
     } else {
-      res.render("login");
+      res.render("index");
     }
   });
 
@@ -37,14 +40,6 @@ module.exports = function(app, passport) {
       failureRedirect: "/login"
     })
   );
-
-  app.get("/signup", function(req, res) {
-    if (req.isAuthenticated() && req.user) {
-      res.redirect("/");
-    } else {
-      res.render("signup");
-    }
-  });
 
   app.post("/signup", function(req, res) {
     console.log("Sign up");
@@ -69,7 +64,7 @@ module.exports = function(app, passport) {
           .then(function(user) {
             req.user = user;
             console.log("created");
-            res.redirect("login");
+            res.json(user);
           })
           .catch(function(err) {
             console.log("err creating " + err);
@@ -78,17 +73,17 @@ module.exports = function(app, passport) {
     });
   });
   app.get("/logout", function(req, res) {
-    req.logout();
     req.session.destroy(function(err) {
       console.log(err);
+      req.logout();
+      res.redirect("/");
     });
-    res.redirect("/");
   });
   app.get("/profile", function(req, res) {
     if (req.user && req.isAuthenticated()) {
       res.render("profile", { user: req.user });
     } else {
-      res.redirect("login");
+      res.redirect("/");
     }
   });
   // Load User page and pass in an User by id
@@ -105,7 +100,7 @@ module.exports = function(app, passport) {
 
   // Render 404 page for any unmatched routes
   app.get("*", function(req, res) {
-    console.log("***********");
+    console.log("*********** " + req.path);
     res.render("404");
   });
 };
