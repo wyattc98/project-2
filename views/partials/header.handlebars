@@ -1,10 +1,19 @@
-
-    <nav>
+    
+{{#if user}}
+  <nav>
+  <ul id="main-nav">
+    <li><a href="/">The Blog Spot</a></li>
+    <li><a href="/blogs">Blogs</a></li>
+    <li><a href="/users">Users</a></li>
+    <li><a href="/profile">Profile</a></li>
+  </ul>
+</nav>
+  {{else}}
+  <nav>
         <ul id="main-nav">
-            <li><a href="/">The Blog Spot</a></li>
-            <li><a href="/blogs">Blogs</a></li>
-            <li><a href="/users">Users</a></li>
-            <li><a href="/profile">Profile</a></li>
+            <li>The Blog Spot</li>
+            <li>Log in</li>
+            <li>{{>login}}</li>
         </ul>
     </nav>
-   
+  {{/if}}

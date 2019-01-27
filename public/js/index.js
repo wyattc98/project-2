@@ -3,10 +3,16 @@ var $blogText = $("#blog-text");
 var $blogDescription = $("#blog-description");
 var $submitBtn = $("#submit");
 var $blogList = $("#blog-list");
-var username = $("#username");
-var password = $("#password");
-var signUpBtn = $("#signup");
-var loginBtn = $("#login");
+
+var loginUsername = $("#loginUsername");
+var loginPassword = $("#loginPassword");
+
+var createUsername = $("#createUsername");
+var createPassword = $("#createPassword");
+var createPassword2 = $("#createPassword2");
+
+var signUpBtn = $("#createSubmit");
+var loginBtn = $("#loginSubmit");
 
 // The API object contains methods for each kind of request we'll make
 var API = {
@@ -121,34 +127,44 @@ var handleDeleteBtnClick = function() {
 var handleSignUpSubmit = function(e) {
   e.preventDefault();
 
+  if (createPassword.val().trim() !== createPassword2.val().trim()) {
+    alert("Passwords do not match!");
+    return;
+  }
+
   var user = {
-    username: username.val().trim(),
-    password: password.val().trim()
+    username: createUsername.val().trim(),
+    password: createPassword.val().trim()
   };
 
   if (!(user.username && user.password)) {
     alert("You must enter a username and password!");
     return;
   }
+
   API.signUp(user)
-    .then(function() {
+    .then(function(user) {
       console.log("signed up");
-      window.location.reload(true);
+      API.logIn(user)
+        .then(function() {
+          console.log("logged in");
+          window.location.reload(true);
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
     })
     .catch(function(err) {
       alert("Error signing up." + err);
     });
-
-  username.val("");
-  password.val("");
 };
 
 var handleLoginSubmit = function(e) {
   e.preventDefault();
 
   var user = {
-    username: username.val().trim(),
-    password: password.val().trim()
+    username: loginUsername.val().trim(),
+    password: loginPassword.val().trim()
   };
 
   if (!(user.username && user.password)) {
@@ -163,9 +179,6 @@ var handleLoginSubmit = function(e) {
     .catch(function(err) {
       alert("Error logging in. " + err);
     });
-
-  username.val("");
-  password.val("");
 };
 
 // Add event listeners to the submit and delete buttons

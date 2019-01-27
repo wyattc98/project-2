@@ -1,6 +1,7 @@
 <div id="home">
   <div class="container">
-    <div class="row">
+    {{#if user}}
+    <div>
       <div class="col-8 offset-2">
         <h1>Hello: {{user.username}}</h1>
         <h2>This is our Home Page!</h2>
@@ -22,7 +23,17 @@
         </ul>
       </div>
     </div>
+
+    {{else}}
+    <div class="row">
+      <div class="col-8 m-auto">
+      <h2>Create Account Here!</h2>
+      {{>create}}
+      </div>
+    </div>
+    {{/if}}
+
   </div>
 </div>
-
-
+</div>
+</div>
