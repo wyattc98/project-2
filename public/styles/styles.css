@@ -43,6 +43,7 @@ body {
 
 .container {
   background: whitesmoke;
+<<<<<<< HEAD
   min-height: 25vh;
 }
 
@@ -58,17 +59,11 @@ body {
 
 .createAcc {
 padding-left: 25%;
+=======
+  border: 1px solid lightslategray;
+>>>>>>> master
 }
 
 .list-group-item {
   line-height: 2.5;
-}
-
-#widget-container{
-  width: 100vw;
-  height: 100vh;
-}
-
-.container {
-  border: 1px solid lightslategray;
 }
