@@ -4,7 +4,7 @@ var db = require("../models");
 
 module.exports = function(app) {
   // Get all Blogs
-  app.get("/api/Blogs", function(req, res) {
+  app.get("/api/blogs", function(req, res) {
     if (req.isAuthenticated()) {
       db.Blog.findAll({
         where: {
@@ -14,7 +14,7 @@ module.exports = function(app) {
         res.json(dbBlogs);
       });
     } else {
-      res.redirect("/");
+      res.send([]);
     }
   });
 

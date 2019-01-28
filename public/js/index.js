@@ -1,6 +1,6 @@
 // Get references to page elements
-var $blogText = $("#blog-text");
-var $blogDescription = $("#blog-description");
+var $blogTitle = $("#blog-title");
+var $blogContent = $("#blog-content");
 var $submitBtn = $("#submit");
 var $blogList = $("#blog-list");
 
@@ -63,29 +63,32 @@ var API = {
 // refreshBlogs gets new Blogs from the db and repopulates the list
 var refreshBlogs = function() {
   API.getBlogs().then(function(data) {
-    var $blogs = data.map(function(blog) {
-      var $a = $("<a>")
-        .text(blog.text)
-        .attr("href", "/blogs/" + blog.id);
+    console.log(typeof data);
 
-      var $li = $("<li>")
-        .attr({
-          class: "list-group-item",
-          "data-id": blog.id
-        })
-        .append($a);
+    if (typeof data === "object") {
+      var $blogs = data.map(function(blog) {
+        var $a = $("<a>")
+          .text(blog.title)
+          .attr("href", "/blogs/" + blog.id);
 
-      var $button = $("<button>")
-        .addClass("btn btn-danger float-right delete")
-        .text("ｘ");
+        var $li = $("<li>")
+          .attr({
+            class: "list-group-item",
+            "data-id": blog.id
+          })
+          .append($a);
 
-      $li.append($button);
+        var $button = $("<button>")
+          .addClass("btn btn-danger float-right delete")
+          .text("ｘ");
 
-      return $li;
-    });
+        $li.append($button);
 
-    $blogList.empty();
-    $blogList.append($blogs);
+        return $li;
+      });
+      $blogList.empty();
+      $blogList.append($blogs);
+    }
   });
 };
 
@@ -95,12 +98,12 @@ var handleFormSubmit = function(event) {
   event.preventDefault();
 
   var blog = {
-    title: $blogText.val().trim(),
-    text: $blogDescription.val().trim()
+    title: $blogTitle.val().trim(),
+    text: $blogContent.val().trim()
   };
 
   if (!(blog.title && blog.text)) {
-    alert("You must enter an blog text and description!");
+    alert("You must enter an blog title and text!");
     return;
   }
 
@@ -108,8 +111,8 @@ var handleFormSubmit = function(event) {
     refreshBlogs();
   });
 
-  $blogText.val("");
-  $blogDescription.val("");
+  $blogTitle.val("");
+  $blogContent.val("");
 };
 
 // handleDeleteBtnClick is called when an blog's delete button is clicked
@@ -143,19 +146,20 @@ var handleSignUpSubmit = function(e) {
   }
 
   API.signUp(user)
-    .then(function(user) {
-      console.log("signed up");
-      API.logIn(user)
-        .then(function() {
-          console.log("logged in");
-          window.location.reload(true);
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
+    .then(function(user2) {
+      console.log(user2);
+      if (user2) {
+        console.log("signed up");
+        console.log(user);
+        loginUsername.val(user.username);
+        loginPassword.val(user.password);
+        handleLoginSubmit(e);
+      } else {
+        alert("Username already taken");
+      }
     })
-    .catch(function(err) {
-      alert("Error signing up." + err);
+    .catch(function() {
+      alert("Username already taken");
     });
 };
 

@@ -16,6 +16,7 @@ module.exports = function(app, passport) {
   //   console.log(`SALT: ${c} HASH: ${h3}`);
   //   console.log(bcrypt.compareSync(h1, h1));
   // });
+
   app.get("/", function(req, res) {
     if (req.isAuthenticated()) {
       res.render("index", { user: req.user });
@@ -43,18 +44,17 @@ module.exports = function(app, passport) {
 
   app.post("/signup", function(req, res) {
     console.log("Sign up");
-    console.log("hashed");
+
     var hash = bcrypt.hashSync(req.body.password);
-    console.log(hash);
+
     db.User.findOne({
       where: {
-        id: req.body.id,
         username: req.body.username
       }
     }).then(function(userdb) {
       if (userdb) {
         console.log("username already taken");
-        res.redirect("signup");
+        res.json();
       } else {
         console.log("CREATING");
         db.User.create({
@@ -90,23 +90,35 @@ module.exports = function(app, passport) {
   // Load User page and pass in an User by id
   app.get("/users/:id", function(req, res) {
     console.log("finding specific user");
-    db.User.findOne({
-      where: { id: req.params.id }
-    }).then(function(dbUser) {
-      res.render("profile", {
-        user: dbUser
+    if (req.isAuthenticated()) {
+      db.User.findOne({
+        where: { id: req.params.id }
+      }).then(function(dbUser) {
+        res.render("profile", {
+          user: dbUser
+        });
       });
-    });
+    } else {
+      res.redirect("/");
+    }
   });
   app.get("/users", function(req, res) {
-    db.User.findAll({}).then(function(users) {
-      res.render("users", { users: users });
-    });
+    if (req.isAuthenticated()) {
+      db.User.findAll({}).then(function(users) {
+        res.render("users", { user: req.user, users: users });
+      });
+    } else {
+      res.redirect("/");
+    }
   });
   app.get("/blogs", function(req, res) {
-    db.Blog.findAll({}).then(function(blogs) {
-      res.render("blogs", { blogs: blogs });
-    });
+    if (req.isAuthenticated()) {
+      db.Blog.findAll({}).then(function(blogs) {
+        res.render("blogs", { user: req.user, blogs: blogs });
+      });
+    } else {
+      res.redirect("/");
+    }
   });
   app.get("/blogs/:id", function(req, res) {
     db.Blog.findOne({
@@ -114,16 +126,18 @@ module.exports = function(app, passport) {
         id: req.params.id
       }
     }).then(function(blog) {
-      res.render("blog", { blog: blog });
+      db.User.findOne({
+        where: {
+          id: blog.uid
+        }
+      }).then(function(user){
+
+        res.render("blog", { user: req.user, blog: blog, author: user });
+      });
     });
   });
   // Render 404 page for any unmatched routes
   app.get("*", function(req, res) {
-<<<<<<< HEAD
-    console.log("*", req.path);
-=======
-    console.log("*********** " + req.path);
->>>>>>> redirecting
     res.render("404");
   });
 };
