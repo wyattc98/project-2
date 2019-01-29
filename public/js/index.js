@@ -1,12 +1,18 @@
 // Get references to page elements
-var $blogText = $("#blog-text");
-var $blogDescription = $("#blog-description");
+var $blogTitle = $("#blog-title");
+var $blogContent = $("#blog-content");
 var $submitBtn = $("#submit");
 var $blogList = $("#blog-list");
-var username = $("#username");
-var password = $("#password");
-var signUpBtn = $("#signup");
-var loginBtn = $("#login");
+
+var loginUsername = $("#loginUsername");
+var loginPassword = $("#loginPassword");
+
+var createUsername = $("#createUsername");
+var createPassword = $("#createPassword");
+var createPassword2 = $("#createPassword2");
+
+var signUpBtn = $("#createSubmit");
+var loginBtn = $("#loginSubmit");
 
 // The API object contains methods for each kind of request we'll make
 var API = {
@@ -57,29 +63,32 @@ var API = {
 // refreshBlogs gets new Blogs from the db and repopulates the list
 var refreshBlogs = function() {
   API.getBlogs().then(function(data) {
-    var $blogs = data.map(function(blog) {
-      var $a = $("<a>")
-        .text(blog.text)
-        .attr("href", "/blog/" + blog.id);
+    console.log(typeof data);
 
-      var $li = $("<li>")
-        .attr({
-          class: "list-group-item",
-          "data-id": blog.id
-        })
-        .append($a);
+    if (typeof data === "object") {
+      var $blogs = data.map(function(blog) {
+        var $a = $("<a>")
+          .text(blog.title)
+          .attr("href", "/blogs/" + blog.id);
 
-      var $button = $("<button>")
-        .addClass("btn btn-danger float-right delete")
-        .text("ｘ");
+        var $li = $("<li>")
+          .attr({
+            class: "list-group-item",
+            "data-id": blog.id
+          })
+          .append($a);
 
-      $li.append($button);
+        var $button = $("<button>")
+          .addClass("btn btn-danger float-right delete")
+          .text("ｘ");
 
-      return $li;
-    });
+        $li.append($button);
 
-    $blogList.empty();
-    $blogList.append($blogs);
+        return $li;
+      });
+      $blogList.empty();
+      $blogList.append($blogs);
+    }
   });
 };
 
@@ -89,12 +98,12 @@ var handleFormSubmit = function(event) {
   event.preventDefault();
 
   var blog = {
-    title: $blogText.val().trim(),
-    text: $blogDescription.val().trim()
+    title: $blogTitle.val().trim(),
+    text: $blogContent.val().trim()
   };
 
   if (!(blog.title && blog.text)) {
-    alert("You must enter an blog text and description!");
+    alert("You must enter an blog title and text!");
     return;
   }
 
@@ -102,8 +111,8 @@ var handleFormSubmit = function(event) {
     refreshBlogs();
   });
 
-  $blogText.val("");
-  $blogDescription.val("");
+  $blogTitle.val("");
+  $blogContent.val("");
 };
 
 // handleDeleteBtnClick is called when an blog's delete button is clicked
@@ -121,34 +130,45 @@ var handleDeleteBtnClick = function() {
 var handleSignUpSubmit = function(e) {
   e.preventDefault();
 
+  if (createPassword.val().trim() !== createPassword2.val().trim()) {
+    alert("Passwords do not match!");
+    return;
+  }
+
   var user = {
-    username: username.val().trim(),
-    password: password.val().trim()
+    username: createUsername.val().trim(),
+    password: createPassword.val().trim()
   };
 
   if (!(user.username && user.password)) {
     alert("You must enter a username and password!");
     return;
   }
-  API.signUp(user)
-    .then(function() {
-      console.log("signed up");
-      window.location.reload(true);
-    })
-    .catch(function(err) {
-      alert("Error signing up." + err);
-    });
 
-  username.val("");
-  password.val("");
+  API.signUp(user)
+    .then(function(user2) {
+      console.log(user2);
+      if (user2) {
+        console.log("signed up");
+        console.log(user);
+        loginUsername.val(user.username);
+        loginPassword.val(user.password);
+        handleLoginSubmit(e);
+      } else {
+        alert("Username already taken");
+      }
+    })
+    .catch(function() {
+      alert("Username already taken");
+    });
 };
 
 var handleLoginSubmit = function(e) {
   e.preventDefault();
 
   var user = {
-    username: username.val().trim(),
-    password: password.val().trim()
+    username: loginUsername.val().trim(),
+    password: loginPassword.val().trim()
   };
 
   if (!(user.username && user.password)) {
@@ -163,9 +183,6 @@ var handleLoginSubmit = function(e) {
     .catch(function(err) {
       alert("Error logging in. " + err);
     });
-
-  username.val("");
-  password.val("");
 };
 
 // Add event listeners to the submit and delete buttons
@@ -173,3 +190,4 @@ $submitBtn.on("click", handleFormSubmit);
 $blogList.on("click", ".delete", handleDeleteBtnClick);
 signUpBtn.on("click", handleSignUpSubmit);
 loginBtn.on("click", handleLoginSubmit);
+refreshBlogs();

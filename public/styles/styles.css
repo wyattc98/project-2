@@ -24,6 +24,7 @@ body {
 
 #main-nav li:nth-child(2) {
   padding-right: 32px;
+
   font-size: 20px;
 }
 
@@ -43,7 +44,6 @@ body {
 
 .container {
   background: whitesmoke;
-<<<<<<< HEAD
   min-height: 25vh;
 }
 
@@ -59,9 +59,8 @@ body {
 
 .createAcc {
 padding-left: 25%;
-=======
   border: 1px solid lightslategray;
->>>>>>> master
+
 }
 
 .list-group-item {

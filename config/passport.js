@@ -11,28 +11,19 @@ module.exports = function(passport) {
         }
       })
         .then(function(user) {
-          if (!user || !bcrypt.compareSync(password, user.password)) {
-            console.log(user);
-            console.log("uh oh no user or bad pass");
-            return done(null, false, {
-              message: "Incorrect username or password."
-            });
+          console.log("logging in...");
+          if (user) {
+            console.log("user found");
+            if (bcrypt.compareSync(password, user.password)) {
+              console.log("password matches");
+              done(null, user);
+            } else {
+              console.log("password does not match.");
+              done(null, null);
+            }
           } else {
-            console.log("EXPECTED");
-            db.Blog.findAll({
-              where: {
-                uid: user.id
-              }
-            })
-              .then(function(blogs) {
-                user.blogs = blogs;
-                return done(null, user);
-              })
-              .catch(function(err) {
-                console.log("trouble getting blogs");
-                console.log(err);
-                return done(null, user);
-              });
+            console.log("no user found");
+            done(null, null);
           }
         })
         .catch(function(err) {
@@ -53,7 +44,6 @@ module.exports = function(passport) {
   });
 
   passport.deserializeUser(function(id, cb) {
-    console.log("DESERIALIZING");
     db.User.findOne({
       where: {
         id: id

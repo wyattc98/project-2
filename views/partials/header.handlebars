@@ -1,11 +1,21 @@
 
-<link rel="stylesheet" href="../public/styles/styles.css">
-    <nav>
-        <ul id="main-nav">
-            <li>The Blog Spot</li>
-            <li>Log in</li>
-            <li>{{>login}}</li>
-        </ul>
-    </nav>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="/js/index.js"></script>
+{{#if user}}
+<nav>
+  <ul id="main-nav">
+    <li><a href="/">The Blog Spot</a></li>
+    <li><a href="/">Home</a></li>
+    <li><a href="/blogs">Blogs</a></li>
+    <li><a href="/users">Users</a></li>
+    <li><a href="/profile">Profile</a></li>
+     <li><a href="/logout">Log Out</a></li>
+  </ul>
+</nav>
+{{else}}
+<nav>
+  <ul id="main-nav">
+    <li><a href="/">The Blog Spot</a></li>
+    <li>Log in</li>
+    <li>{{>login}}</li>
+  </ul>
+</nav>
+{{/if}}
