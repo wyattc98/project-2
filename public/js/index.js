@@ -70,7 +70,6 @@ var refreshBlogs = function() {
         var $a = $("<a>")
           .text(blog.title)
           .attr("href", "/blogs/" + blog.id);
-
         var $li = $("<li>")
           .attr({
             class: "list-group-item",

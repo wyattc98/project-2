@@ -94,8 +94,13 @@ module.exports = function(app, passport) {
       db.User.findOne({
         where: { id: req.params.id }
       }).then(function(dbUser) {
-        res.render("profile", {
-          user: dbUser
+        db.Blog.findAll({
+          where: { uid: dbUser.id }
+        }).then(function(blogs) {
+          res.render("profile", {
+            user: dbUser,
+            blogs: blogs
+          });
         });
       });
     } else {
@@ -130,8 +135,7 @@ module.exports = function(app, passport) {
         where: {
           id: blog.uid
         }
-      }).then(function(user){
-
+      }).then(function(user) {
         res.render("blog", { user: req.user, blog: blog, author: user });
       });
     });
