@@ -1,7 +1,9 @@
 <div class="container">
     <ul>
     {{#each users }}
-    <li><a href="users/{{this.id}}"> {{this.username}}</a></li>
+    <li class="card">
+<div class="card-body"><a href="users/{{this.id}}"> {{this.username}}</a></div>
+</li>
     {{/each}}
     </ul>
 </div>
