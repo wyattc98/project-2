@@ -16,6 +16,17 @@ var db = require("./models");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
+app.use("/favicon.ico", express.static(__dirname + "/favicon.ico"));
+
+
+// Handlebars
+app.engine(
+  "handlebars",
+  exphbs({
+    defaultLayout: "main"
+  })
+);
+app.set("view engine", "handlebars");
 
 app.use(
   session({
@@ -31,16 +42,6 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Handlebars
-app.engine(
-  "handlebars",
-  exphbs({
-    defaultLayout: "main"
-  })
-);
-app.set("view engine", "handlebars");
-
 // Routes
 require("./routes/apiRoutes")(app, passport);
 require("./routes/htmlRoutes")(app, passport);
