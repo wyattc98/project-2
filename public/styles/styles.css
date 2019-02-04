@@ -1,3 +1,68 @@
+body {
+  font-family: 'Lora', serif;
+  background-image: url("https://images.pexels.com/photos/747964/pexels-photo-747964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260/");
+
+}
+
+
+
+#main-nav{
+  width: 100%;
+  height: 15%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid darkcyan;
+  background: cadetblue;
+}
+
+
+#main-nav li:first-child {
+  margin-right: auto;
+  font-size: 38px;
+}
+
+#main-nav li:nth-child(2) {
+  padding-right: 32px;
+
+  font-size: 20px;
+}
+
+
+
+#main-nav li {
+  list-style-type: none;
+}
+
+#main-nav a {
+  color: black;
+  margin: 10px;
+  display: block;
+  padding: 15px;
+  text-decoration: none;
+}
+
+.container {
+  background: whitesmoke;
+  min-height: 25vh;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  padding-left: 15%;
+}
+
+.row h2 {
+  padding-left: 25%;
+}
+
+.createAcc {
+padding-left: 25%;
+  border: 1px solid lightslategray;
+
+}
+
 .list-group-item {
   line-height: 2.5;
 }

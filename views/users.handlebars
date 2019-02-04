@@ -1,0 +1,9 @@
+<div class="container">
+    <ul>
+    {{#each users }}
+    <li class="card">
+<div class="card-body"><a href="users/{{this.id}}"> {{this.username}}</a></div>
+</li>
+    {{/each}}
+    </ul>
+</div>

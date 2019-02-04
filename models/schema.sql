@@ -1,5 +1,13 @@
-DROP DATABASE IF EXISTS exampledb;
-CREATE DATABASE exampledb;
+DROP DATABASE IF EXISTS blogdb;
+CREATE DATABASE blogdb;
 
-DROP DATABASE IF EXISTS testdb;
-CREATE DATABASE testdb;
+use blogdb;
+select * from users;
+use blogdb;
+select * from blogs;
+
+use blogdb;
+delete from users;
+use blogdb;
+delete from blogs;
+
